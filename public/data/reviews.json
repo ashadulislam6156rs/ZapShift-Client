@@ -1,0 +1,98 @@
+[
+  {
+    "id": "5f47ac10b4f1c03e8c123456",
+    "user_email": "john.doe@example.com",
+    "userName": "John Doe",
+    "delivery_email": "delivery1@example.com",
+    "ratings": 4.5,
+    "review": "The delivery service was smooth and surprisingly efficient from start to finish. The staff behaved politely and communicated clearly throughout the entire process. My parcel arrived in perfect condition, without any damage or delay. I genuinely appreciate the professionalism shown by the team. Overall, this was a very pleasant experience that exceeded my expectations. Highly recommended service.",
+    "parcel_id": "5f47ac10b4f1c03e8c654321",
+    "pick_up_email": "pickup1@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/men/10.jpg",
+    "date": "2024-05-08T14:30:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c234567",
+    "user_email": "jane.smith@example.com",
+    "userName": "Jane Smith",
+    "delivery_email": "delivery2@example.com",
+    "ratings": 3.8,
+    "review": "The delivery took slightly longer than I initially expected, which made me a bit worried during the waiting process. However, the overall experience was still decent considering the final outcome. The package arrived safely and in good shape. Customer support responded eventually, though slower than ideal. With some improvements, this service could become much more reliable for everyone.",
+    "parcel_id": "5f47ac10b4f1c03e8c765432",
+    "pick_up_email": "pickup2@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/women/25.jpg",
+    "date": "2024-06-10T10:15:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c345678",
+    "user_email": "alex.brown@example.com",
+    "userName": "Alex Brown",
+    "delivery_email": "delivery3@example.com",
+    "ratings": 5.0,
+    "review": "The service was absolutely excellent in every possible way, offering both speed and complete reliability. My parcel reached its destination earlier than expected, which genuinely surprised me. Everything was securely packed and handled with exceptional care. I truly appreciate such dedication and effort from the delivery team. This was one of my best delivery experiences ever encountered.",
+    "parcel_id": "5f47ac10b4f1c03e8c876543",
+    "pick_up_email": "pickup3@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/men/34.jpg",
+    "date": "2024-07-01T08:50:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c456789",
+    "user_email": "lisa.white@example.com",
+    "userName": "Lisa White",
+    "delivery_email": "delivery4@example.com",
+    "ratings": 4.2,
+    "review": "The delivery team was highly responsive and maintained a professional attitude throughout the entire process. My package arrived safely without any damage, and the communication was clear and consistent. The overall experience felt smooth and well organized. I appreciate the effort they put into ensuring customer satisfaction. With a few refinements, this service can become even better.",
+    "parcel_id": "5f47ac10b4f1c03e8c987654",
+    "pick_up_email": "pickup4@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/women/12.jpg",
+    "date": "2024-07-15T09:10:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c567890",
+    "user_email": "david.lee@example.com",
+    "userName": "David Lee",
+    "delivery_email": "delivery5@example.com",
+    "ratings": 2.9,
+    "review": "The delivery experience was quite disappointing because the package arrived significantly later than expected. There were no proper updates during the delay, which made the situation even more frustrating. I hoped for more transparency and communication from the service. While the parcel eventually reached me safely, the overall reliability must improve for better customer satisfaction in future deliveries.",
+    "parcel_id": "5f47ac10b4f1c03e8c098765",
+    "pick_up_email": "pickup5@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/men/19.jpg",
+    "date": "2024-08-02T16:45:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c678901",
+    "user_email": "nina.khan@example.com",
+    "userName": "Nina Khan",
+    "delivery_email": "delivery6@example.com",
+    "ratings": 4.9,
+    "review": "This was truly an outstanding delivery experience, far better than what I expected. The entire process felt smooth, quick, and very well managed by the staff. They handled my parcel with great care and ensured no damage occurred. Communication remained clear throughout the journey, which I greatly appreciated. I definitely recommend this service for reliable deliveries anytime.",
+    "parcel_id": "5f47ac10b4f1c03e8c109876",
+    "pick_up_email": "pickup6@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/women/8.jpg",
+    "date": "2024-08-10T12:00:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c789012",
+    "user_email": "michael.jordan@example.com",
+    "userName": "Michael Jordan",
+    "delivery_email": "delivery7@example.com",
+    "ratings": 3.3,
+    "review": "The service was fairly decent overall, though not without noticeable issues. The packaging quality could have been significantly better to protect the items inside. Delivery timing was acceptable, but communication was minimal, leaving me uncertain at times. However, the staff behaved politely. With improvements to packaging and better updates, this service can greatly enhance its overall customer experience.",
+    "parcel_id": "5f47ac10b4f1c03e8c210987",
+    "pick_up_email": "pickup7@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/men/22.jpg",
+    "date": "2024-08-14T18:20:00.000Z"
+  },
+  {
+    "id": "5f47ac10b4f1c03e8c890123",
+    "user_email": "emma.watson@example.com",
+    "userName": "Emma Watson",
+    "delivery_email": "delivery8@example.com",
+    "ratings": 4.7,
+    "review": "My experience with this delivery service was impressively smooth and reliable from beginning to end. The parcel arrived earlier than I expected, in perfect condition, without any damage. The delivery person was polite and professional. Communication updates were timely, which made the entire process stress-free. I am very pleased with the service quality and would gladly recommend it.",
+    "parcel_id": "5f47ac10b4f1c03e8c321098",
+    "pick_up_email": "pickup8@example.com",
+    "user_photoURL": "https://randomuser.me/api/portraits/women/5.jpg",
+    "date": "2024-08-20T07:30:00.000Z"
+  }
+]
