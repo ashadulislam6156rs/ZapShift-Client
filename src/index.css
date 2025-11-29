@@ -6,3 +6,11 @@
   --color-primary: blue;
   --color-secondary: teal;
 }
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button{
+  @apply appearance-none m-0;
+}
+.no-spinner{
+  appearance: textfield;
+}

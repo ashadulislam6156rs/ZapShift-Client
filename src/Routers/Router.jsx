@@ -8,6 +8,13 @@ import Register from "../Pages/Auth/Register/Register";
 import ForgetPassword from "../Pages/Auth/ForgetPassword";
 import Coverage from "../Pages/Coverage";
 import SendParcel from "../Pages/SendParcel/SendParcel";
+import PrivateRoutes from "./PrivateRoutes";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import MyParcels from "../Pages/Dashboard/User/MyParcels";
+import Payment from "../Pages/Dashboard/User/Payment";
+import PaymentSuccess from "../Pages/Dashboard/User/PaymentSuccess";
+import PaymentCancel from "../Pages/Dashboard/User/PaymentCancel";
+import MyPaymentHistory from "../Pages/Dashboard/User/MyPaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +38,11 @@ export const router = createBrowserRouter([
       {
         path: "/sendParcel",
         loader: () => fetch("coverage.json"),
-        Component: SendParcel,
+        element: (
+          <PrivateRoutes>
+            <SendParcel></SendParcel>
+          </PrivateRoutes>
+        ),
       },
     ],
   },
@@ -50,6 +61,36 @@ export const router = createBrowserRouter([
       {
         path: "/forgetPassword",
         Component: ForgetPassword,
+      },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoutes>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoutes>
+    ),
+    children: [
+      {
+        path: "myParcels",
+        Component: MyParcels,
+      },
+      {
+        path: "payment/:id",
+        Component: Payment,
+      },
+      {
+        path: "payment/success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "myPaymentHistory",
+        Component: MyPaymentHistory,
+      },
+      {
+        path: "payment/cancel",
+        Component: PaymentCancel,
       },
     ],
   },

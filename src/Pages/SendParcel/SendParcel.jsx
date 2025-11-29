@@ -1,54 +1,108 @@
 import React from "react";
 import Container from "../../Componants/Container/Container";
-import {  useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import useAuth from "../../Hooks/useAuth";
 
 const SendParcel = () => {
   const {
     register,
-      handleSubmit,
+    handleSubmit,
     control,
-    formState: { errors },
-    } = useForm();
     
-    const data = useLoaderData();
-    const regionDuplicate = data.map((d) => d.region);
-    const regions = [...new Set(regionDuplicate)];
-    const senderDistrict = useWatch({ control, name: "senderRegion" });
-    const receiverDistrict = useWatch({ control, name: "receiverRegion" });
+  } = useForm();
 
-    const handleDistricts = (region) => {
-        const regionsData = data.filter((r) => r.region === region);
-        const district = regionsData.map((d) => d.district);
-        return district;
-    }
-    
+  const data = useLoaderData();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
+  const regionDuplicate = data.map((d) => d.region);
+  const regions = [...new Set(regionDuplicate)];
+  const senderDistrict = useWatch({ control, name: "senderRegion" });
+  const receiverDistrict = useWatch({ control, name: "receiverRegion" });
+
+  const handleDistricts = (region) => {
+    const regionsData = data.filter((r) => r.region === region);
+    const district = regionsData.map((d) => d.district);
+    return district;
+  };
+
+
+  // ** handle Send parcels
   const handleSendParcel = (data) => {
-      
-      console.log(data);
-      let cost = 0;
-      const isDocument = data.documentType === "Document";
-      const isSameDistrict = data.Senderdistrict === data.receiverDistrict;
-      if (isDocument) {
-          cost = isSameDistrict ? 60 : 80;
+    
+    let cost = 0;
+    const delivaryStatus = "Pending";
+    const paymentStatus = "Pending"
+    const createdAt = new Date();
+    const isDocument = data.documentType === "Document";
+    const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+    if (isDocument) {
+      cost = isSameDistrict ? 60 : 80;
+    } else {
+      //ParcelWeight
+      if (data.parcelWeight <= 3) {
+        cost = isSameDistrict ? 110 : 150;
+      } else {
+        const extraWeight = data.parcelWeight - 3;
+        const extraCharge = extraWeight * 40;
+        cost = isSameDistrict ? 110 + extraCharge : 150 + extraCharge + 40;
       }
-      else {
+    }
+    const parcelData = {
+      ...data,
+      totalCost: cost,
+      delivaryStatus,
+      createdAt,
+      paymentStatus,
+    };
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure willing to pay?",
+        text: "You can't get this money back!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Pay it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+
+          axiosSecure.post("/parcels", parcelData)
+            .then(() => {
+              swalWithBootstrapButtons.fire({
+                title: "Success",
+                text: "Your pay has been successfull.",
+                icon: "success",
+              });
+            
+            })
+            .catch(err => toast.error(err.message));
           
-            //ParcelWeight
-          if (data.ParcelWeight <= 3) {
-              cost = isSameDistrict ? 110 : 150;
-          } else {
-              const extraWeight = data.ParcelWeight - 3;
-              const extraCharge = extraWeight * 40;
-              cost = isSameDistrict ? 110 + extraCharge : 150 + extraCharge + 40;
-          }
-      }
-      
-     console.log(cost);
-     
-      
-      
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your imaginary pay is safe :)",
+            icon: "error",
+          });
+        }
+      });
+    
   };
 
   return (
@@ -90,6 +144,7 @@ const SendParcel = () => {
                   </label>
                   <input
                     type="text"
+                    {...register("parcelName")}
                     className="input outline-0 w-full"
                     placeholder="Enter parcel Name"
                   />
@@ -99,9 +154,9 @@ const SendParcel = () => {
                     Parcel Weight (KG)
                   </label>
                   <input
-                                      type="number"
-                                      {...register("ParcelWeight")}
-                    className="input outline-0 w-full"
+                    type="number"
+                    {...register("parcelWeight")}
+                    className="input outline-0 w-full no-spinner"
                     placeholder="Enter parcel weight (KG)"
                   />
                 </div>
@@ -118,6 +173,8 @@ const SendParcel = () => {
                     </label>
                     <input
                       type="text"
+                      {...register("senderName")}
+                      defaultValue={user?.displayName}
                       className="input outline-0 w-full"
                       placeholder="Enter Sender Name"
                     />
@@ -126,11 +183,26 @@ const SendParcel = () => {
                 <fieldset className="flex gap-5 items-center mt-3">
                   <div className="flex flex-col w-full">
                     <label className="label text-black mb-1 font-normal text-sm">
+                      Sender Email
+                    </label>
+                    <input
+                      type="email"
+                      {...register("senderEmail")}
+                      defaultValue={user?.email}
+                      className="input outline-0 w-full"
+                      placeholder="Enter Sender Email"
+                    />
+                  </div>
+                </fieldset>
+                <fieldset className="flex gap-5 items-center mt-3">
+                  <div className="flex flex-col w-full ">
+                    <label className="label text-black mb-1 font-normal text-sm">
                       Sender Contact No
                     </label>
                     <input
-                      type="text"
-                      className="input outline-0 w-full"
+                      type="number"
+                      {...register("senderMobileNo")}
+                      className="input outline-0 w-full no-spinner"
                       placeholder="Enter Sender Contact No"
                     />
                   </div>
@@ -141,12 +213,9 @@ const SendParcel = () => {
                       Your Region
                     </label>
                     <select
-                      defaultValue="Select your region"
                       {...register("senderRegion")}
                       className="select appearance-none w-full"
                     >
-                      <option disabled={true}>Select your region</option>
-
                       {regions.map((region, i) => (
                         <option key={i}>{region}</option>
                       ))}
@@ -157,11 +226,9 @@ const SendParcel = () => {
                       Sender Districts
                     </label>
                     <select
-                      defaultValue="Select Sender Districts"
-                      {...register("Senderdistrict")}
+                      {...register("senderDistrict")}
                       className="select appearance-none"
                     >
-                      <option disabled={true}>Select Sender Districts</option>
                       {handleDistricts(senderDistrict).map((district, i) => (
                         <option key={i}>{district}</option>
                       ))}
@@ -174,6 +241,7 @@ const SendParcel = () => {
                   </label>
                   <input
                     type="text"
+                    {...register("senderAddress")}
                     className="input outline-0 w-full"
                     placeholder="Enter Address"
                   />
@@ -185,6 +253,7 @@ const SendParcel = () => {
                   </label>
                   <textarea
                     className="textarea w-full"
+                    {...register("pickupInstruction")}
                     placeholder="Pickup Instruction"
                   ></textarea>
                 </div>
@@ -198,8 +267,22 @@ const SendParcel = () => {
                     </label>
                     <input
                       type="text"
+                      {...register("receiverName")}
                       className="input outline-0 w-full"
                       placeholder="Enter Receiver Name"
+                    />
+                  </div>
+                </fieldset>
+                <fieldset className="flex gap-5 items-center mt-3">
+                  <div className="flex flex-col w-full">
+                    <label className="label text-black mb-1 font-normal text-sm">
+                      Receiver Email
+                    </label>
+                    <input
+                      type="email"
+                      {...register("receiverEmail")}
+                      className="input outline-0 w-full"
+                      placeholder="Enter Receiver Email"
                     />
                   </div>
                 </fieldset>
@@ -209,8 +292,9 @@ const SendParcel = () => {
                       Receiver Contact No
                     </label>
                     <input
-                      type="text"
-                      className="input outline-0 w-full"
+                      type="number"
+                      {...register("receiverMobileNo")}
+                      className="input outline-0 w-full no-spinner"
                       placeholder="Enter Receiver Contact No"
                     />
                   </div>
@@ -221,12 +305,9 @@ const SendParcel = () => {
                       Receiver Region
                     </label>
                     <select
-                      defaultValue="Select Receiver region"
                       {...register("receiverRegion")}
                       className="select appearance-none w-full"
                     >
-                      <option disabled={true}>Select Receiver region</option>
-
                       {regions.map((region, i) => (
                         <option key={i}>{region}</option>
                       ))}
@@ -237,11 +318,9 @@ const SendParcel = () => {
                       Receiver Districts
                     </label>
                     <select
-                      defaultValue="Select Receiver Districts"
                       {...register("receiverDistrict")}
                       className="select appearance-none"
                     >
-                      <option disabled={true}>Select Receiver Districts</option>
                       {handleDistricts(receiverDistrict).map((district, i) => (
                         <option key={i}>{district}</option>
                       ))}
@@ -254,6 +333,7 @@ const SendParcel = () => {
                   </label>
                   <input
                     type="text"
+                    {...register("receiverAddress")}
                     className="input outline-0 w-full"
                     placeholder="Enter Receiver Address"
                   />
@@ -265,6 +345,7 @@ const SendParcel = () => {
                   </label>
                   <textarea
                     className="textarea w-full"
+                    {...register("receiverInstruction")}
                     placeholder="Receiver Instruction"
                   ></textarea>
                 </div>
