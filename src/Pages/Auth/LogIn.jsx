@@ -1,13 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from 'react-icons/ai';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../AuthContext/AuthContext';
 import { toast } from 'react-toastify';
 
 const LogIn = () => {
   const [eye, setEye] = useState(true);
   const { userLogIn, userSignInGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+  
   
   const { register, handleSubmit, formState: { errors } } = useForm();
   const handleLogIn = (data) => {
@@ -15,6 +19,7 @@ const LogIn = () => {
     userLogIn(data.email, data.password)
       .then(() => {
         toast.success("Your Account LogIn Successfull.")
+        navigate(location?.state || "/");
       })
       .catch(err => toast.error(err.message));
     
@@ -24,6 +29,7 @@ const LogIn = () => {
     userSignInGoogle()
       .then(() => {
         toast.success("Your Account LogIn Successfull.");
+        navigate(location?.state || "/");
       })
       .catch((err) => toast.error(err.message));
   }

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../../AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import { FaUserLarge } from "react-icons/fa6";
@@ -10,6 +10,8 @@ import axios from "axios";
 
 const Register = () => {
   const [eye, setEye] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
@@ -46,6 +48,7 @@ const Register = () => {
             updateUserInfo(updateInfo);
           });
         toast.success("Your Account has been Successfully Created.");
+        
       })
       .catch((err) => {
         toast.error(err.message);
@@ -57,6 +60,7 @@ const Register = () => {
       userSignInGoogle()
         .then(() => {
           toast.success("Your Account LogIn Successfull.");
+          navigate(location?.state || "/");
         })
         .catch((err) => toast.error(err.message));
     }
